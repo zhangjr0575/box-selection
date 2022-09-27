@@ -5,7 +5,7 @@ vue版本框选工具, 支持移动框选工具
 ## Installation
 
 ```
-$ npm i @zhangjr0575/box-selection
+$ npm i @zhangjr0575/selection-box
 ```
 
 ## screenshot
@@ -16,21 +16,22 @@ $ npm i @zhangjr0575/box-selection
 
 ```vue
 <template>
-	<BoxSelection class="selection-box" classSelector="selection-item" modifierKey="ctrl" draggable
+	<SelectionBox class="selection-box" classSelector="selection-item" modifierKey="ctrl" draggable
 		@selection="onSelectionChange" @beforeMove="onRectBeforeMove" @move="onRectMove">
 		<h2 class="title">选框工具</h2>
 		<div class="selection-item" v-for="(item, index) in selectionItems" :id="item.id" :key="index"
 			:style="{top: item.top + 'px', left: item.left + 'px'}">
 			{{item.label}}
 		</div>
-	</BoxSelection>
+	</SelectionBox>
 </template>
 
 <script>
-import BoxSelection from "../../src";
+import SelectionBox from "@zhangjr0575/selection-box";
+
 export default {
 	name: "App",
-	components: { BoxSelection },
+	components: { SelectionBox },
 	data() {
 		return {
 			selectionItems: [

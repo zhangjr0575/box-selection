@@ -1,5 +1,5 @@
 {
-	"name": "@zhangjr0575/box-selection",
+	"name": "@zhangjr0575/selection-box",
 	"version": "1.0.0",
 	"description": "vue2框选工具",
 	"main": "src/index.vue",
