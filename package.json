@@ -1,6 +1,6 @@
 {
 	"name": "@zhangjr0575/box-selection",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "vue2框选工具",
 	"main": "src/index.vue",
 	"scripts": {
