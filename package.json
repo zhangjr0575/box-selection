@@ -19,7 +19,8 @@
 	"files": [
 		"package.json",
 		"README.md",
-		"src"
+		"utils",
+		"lib"
 	],
 	"author": "",
 	"license": "ISC",

@@ -16,22 +16,22 @@ $ npm i @zhangjr0575/selection-box
 
 ```vue
 <template>
-	<SelectionBox class="selection-box" classSelector="selection-item" modifierKey="ctrl" draggable
-		@selection="onSelectionChange" @beforeMove="onRectBeforeMove" @move="onRectMove">
-		<h2 class="title">选框工具</h2>
-		<div class="selection-item" v-for="(item, index) in selectionItems" :id="item.id" :key="index"
-			:style="{top: item.top + 'px', left: item.left + 'px'}">
-			{{item.label}}
+	<div class="layout">
+		<h2 class="layout-header">选框工具</h2>
+		<div class="layout-content">
+			<div class="selection-item" v-for="(item, index) in selectionItems" :id="item.id" :key="index"
+				:style="{top: item.top + 'px', left: item.left + 'px'}">
+				{{item.label}}
+			</div>
 		</div>
-	</SelectionBox>
+	</div>
 </template>
 
 <script>
 import SelectionBox from "@zhangjr0575/selection-box";
 
 export default {
-	name: "App",
-	components: { SelectionBox },
+	name: "Layout",
 	data() {
 		return {
 			selectionItems: [
@@ -50,7 +50,19 @@ export default {
 			]
 		};
 	},
+	mounted() {
+		this.init();
+	},
 	methods: {
+		init() {
+			this.selectionBoxInstance = new SelectionBox({
+				modifierKey: "ctrl",
+				classSelector: "selection-item",
+				onSelection: this.onSelectionChange,
+				onBeforeMove: this.onRectBeforeMove,
+				onMove: this.onRectMove
+			});
+		},
 		onSelectionChange(els) {
 			this._selectionEls = els;
 		},
@@ -73,19 +85,36 @@ export default {
 };
 </script>
 
-<style>
-html, body {
-	margin: 0;
+<style lang="scss" scoped>
+.layout {
 	height: 100%;
+	display: flex;
+	flex-direction: column;
+
+	&-header {
+		height: 44px;
+		line-height: 44px;
+		text-align: center;
+	}
+
+	&-content {
+		flex: 1;
+	}
+
+	&-main {
+		width: 5000px;
+		height: 5000px;
+	}
 }
 .selection-box {
 	position: relative;
 	width: 100%;
 	height: 100%;
+	max-width: 100%;
+	max-height: 100%;
+	overflow: scroll;
 }
-.title {
-	text-align: center;
-}
+
 .selection-item {
 	position: absolute;
 	width: 80px;
@@ -97,17 +126,15 @@ html, body {
 </style>
 ```
 
-## props属性表
+## 参数表
 | 属性名          | 数据类型 | 默认值  | 说明 |
 | ---------------| -------| ------- | ---- |
 | modifierKey    | String | 无     | 某些时候我们可能已经监听了鼠标的相关事件, 为避免事件冲突, 我们可以使用添加修饰键形成组合键的方式来规避冲突 |
 | sizeThreshold  | Number | 20     | 选框尺寸最小阈值,尺寸在阈值内的选框将不会生效 |
 | borderColor    | String | #409EFF| 选框的边框色,选框的背景色将会对选框边框色做透明0.1倍处理,请使用16进制或rgb或rgba, 暂不支持类似red的颜色值 |
 | classSelector  | String | 无     | 某些时候我们可能只需要框选指定的元素, 那class选择器将会有用处 |
-| draggable      | Boolean| false  | 选框是否允许被拖动, 在同时选中多个元素并拖动它们的业务中它将至关重要 |
-
-## 事件
--   @selection 当选框发生变化时触发, 参数为当前选框下的所有dom元素
--   @beforeMove 选框开始移动时触发
--   @move 选框移动时触发
--   @afterMove 选框结束移动时触发
+| draggable      | Boolean| true  | 选框是否允许被拖动, 在同时选中多个元素并拖动它们的业务中它将至关重要 |
+| onSelection    | Function| 无  | 当选区发生变化时触发, 参数为当前选区内符合条件的dom元素 |
+| onBeforeMove   | Function| 无  | 当选区开始移动前触发, 此时可以做一些移动前的数据准备工作 |
+| onMove         | Function| 无  | 当选区移动时触发, 此时可以执行自己业务 |
+| onAfterMove    | Function| 无  | 当选区移动结束时触发 |
